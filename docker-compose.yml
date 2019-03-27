@@ -1,0 +1,28 @@
+#A strong system administrator (SA) password: At least 8 characters including uppercase, lowercase letters, base-10 digits and/or non-alphanumeric symbols.
+version: "3.2"
+services:
+  mssql:
+    container_name: myMSSQL
+    image: microsoft/mssql-server-linux:2017-latest
+    volumes:
+      - ./.db:/var/opt/mssql/
+      - /var/opt/mssql/data
+      # volumes doesn't work on MacOS.
+      # Ref: https://github.com/Microsoft/mssql-docker/issues/12
+      #        volumes:
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=<YourNewStrong!Passw0rd>
+      - MSSQL_PID=Developer
+    ports:
+      - "1433:1433"
+    expose:
+      - 1433
+    restart: always
+    networks:
+      - docker-network
+networks:
+  docker-network:
+    driver: bridge
+
+# npm install sql-cli -g  for sql command line
